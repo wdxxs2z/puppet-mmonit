@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Server>
+   <Service>
+       <Connector address="<%= address %>" port="8443" processors="10" secure="true" />
+       <Engine name="mmonit" defaultHost="<%= hostname %>" fileCache="10MB">
+           <Realm url="postgresql://<%= db_user %>:<%= db_pass %>@<%= db_host %>:5432/<%= db_name %>"
+                  minConnections="1"
+                  maxConnections="5"
+                  reapConnections="300" />
+           <ErrorLogger directory="logs" fileName="error.log" rotate="month" />
+           <Host name="<%= hostname %>" appBase="." address="<%= address %>" certificate="<%= cert_path %>">
+               <AccessLogger directory="logs" fileName="localhost_access.log" rotate="month" />
+               <Logger directory="logs" fileName="mmonit.log" rotate="month" timestamp="true" />
+               <Context path="" docBase="docroot" sessionTimeout="1800"
+                        maxActiveSessions="1024" saveSessions="true" />
+               <Context path="/collector" docBase="docroot/collector" />
+           </Host>
+       </Engine>
+   </Service>
+
+   <License owner="<%= license_owner %>">
+     <%= license_key %>
+   </License>
+</Server>
+

@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Server>
    <Service>
-       <Connector address="<%= address %>" port="8443" processors="10" secure="true" />
-       <Engine name="mmonit" defaultHost="<%= hostname %>" fileCache="10MB">
-           <Realm url="postgresql://<%= db_user %>:<%= db_pass %>@<%= db_host %>:5432/<%= db_name %>"
-                  minConnections="1"
-                  maxConnections="5"
-                  reapConnections="300" />
-           <ErrorLogger directory="logs" fileName="error.log" rotate="month" />
-           <Host name="<%= hostname %>" appBase="." address="<%= address %>" certificate="<%= cert_path %>">
-               <AccessLogger directory="logs" fileName="localhost_access.log" rotate="month" />
+
+     <Connector address="<%= @connector_address %>"
+       port="<%= @connector_port %>"
+       processors="<%= @connector_procs %>"
+       <% if @connector_secure == "true" %>
+         <%= secure="true" %>
+       <% end %>
+     />
+
+     <Engine name="mmonit" defaultHost="<%= @engine_defaulthost %>" fileCache="<%= @engine_filecache %>" >
+
+       <Realm url="<%= @realm_url %>"
+              minConnections="<%= @realm_min_cnx %>"
+              maxConnections="<%= @realm_max_cnx %>"
+              reapConnections="<%= @realm_reap_cnx %>" />
+
+            <ErrorLogger directory="<%= @error_dir %>" fileName="<%= @error_filename %>" rotate="<%= @error_log_rotate %>" />
+
+            <Host name="<%= @host_name %>" appBase="." address="<%= @host_address %>" certificate="<%= @host_cert_path %>">
+
+             <% if @access_log_on == "true" %>
+               <AccessLogger directory="<%= @access_log_dir %>" fileName="<%= @access_log_name %>" rotate="<%= @access_log_rotate %>" />
+             <% end %>
+
                <Logger directory="logs" fileName="mmonit.log" rotate="month" timestamp="true" />
                <Context path="" docBase="docroot" sessionTimeout="1800"
                         maxActiveSessions="1024" saveSessions="true" />
@@ -18,8 +33,8 @@
        </Engine>
    </Service>
 
-   <License owner="<%= license_owner %>">
-     <%= license_key %>
+   <License owner="<%= @license_owner %>">
+     <%= @license_key %>
    </License>
 </Server>
 

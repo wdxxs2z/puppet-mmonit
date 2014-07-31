@@ -1,8 +1,9 @@
 ## Overview 
 
-This module install [M/Monit](https://mmonit.com/) and manages it as a service.
+This module installs [M/Monit](https://mmonit.com/) and manages it as a service.
 
-> NOTE: Current implementation is naive -- assumes you purchased M/Monit  and overwrites the trial license key in *conf/server.xml*.
+> NOTE: The current implementation assumes that you purchased M/Monit and overwrites the trial license key in *conf/server.xml*.
+> In other words, this module will not auto-install a **working** trial copy of M/Monit.
 
 ## Usage
 

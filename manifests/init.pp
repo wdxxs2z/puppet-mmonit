@@ -32,6 +32,7 @@ class mmonit(
 
   $license_owner  = "",
   $license_key    = "",
+  $alt_source_url = "",
 ) {
 
   if $::architecture == "amd64" or $::architecture == "x86_64" {
@@ -40,13 +41,25 @@ class mmonit(
       $platid = "x86"
   }
 
-  $filename = "mmonit-${version}-linux-${platid}.tar.gz"
-  
   file { $bin_path : ensure => directory }
   file { $src_path : ensure => directory }
 
+  if $alt_source_url {
+    $download_url = $alt_source_url
+    $url_bits = split($download_url, '/')
+    $filename = $url_bits[-1]
+
+    if !($version in $alt_source_url) {
+      fail("There appears to be a mismatch between M/Monit version specified (${version}) and file name of alternate download source (${alt_source_url})!")
+    }
+
+  } else {
+    $filename = "mmonit-${version}-linux-${platid}.tar.gz"
+    $download_url = "http://mmonit.com/dist/${filename}"
+  }
+
   exec { "download-mmonit-${filename}" :
-    command => "wget http://mmonit.com/dist/${filename} -O ${filename}",
+    command => "wget ${download_url} -O ${filename}",
     cwd => $src_path,
     creates => "${src_path}${filename}",
     require => File[$src_path,$bin_path]

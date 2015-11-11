@@ -1,0 +1,12 @@
+{
+  "name": "wdxxs2z-mmonit",
+  "version": "0.1.0",
+  "author": "wdxxs2z",
+  "summary": "This module installs M/Monit and manages it as a service.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/wdxxs2z/puppet-mmonit",
+  "project_page": "https://github.com/wdxxs2z/puppet-mmonit",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
